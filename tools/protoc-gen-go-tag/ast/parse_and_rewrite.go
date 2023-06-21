@@ -6,6 +6,7 @@ package ast
 
 import (
 	"fmt"
+	"sort"
 
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/proto"
@@ -77,6 +78,9 @@ func WalkDescriptorProto(g *protogen.Plugin, dp *descriptorpb.DescriptorProto, t
 		}
 	}
 	if len(s.FieldInfos) > 0 {
+		sort.Slice(s.FieldInfos, func(i, j int) bool {
+			return s.FieldInfos[i].FieldNameInGo < s.FieldInfos[j].FieldNameInGo
+		})
 		ss = append(ss, s)
 	}
 
@@ -87,6 +91,11 @@ func WalkDescriptorProto(g *protogen.Plugin, dp *descriptorpb.DescriptorProto, t
 			ss = append(ss, nestSs...)
 		}
 	}
+
+	sort.Slice(ss, func(i, j int) bool {
+		return ss[i].StructNameInGo < ss[j].StructNameInGo
+	})
+
 	return ss
 }
 
