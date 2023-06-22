@@ -1,4 +1,4 @@
-module github.com/searKing/golang
+module github.com/blockthrough/golang
 
 go 1.18
 
